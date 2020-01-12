@@ -64,8 +64,33 @@ $ts              = time();
 $tsMidnight      = strtotime("tomorrow");
 $secToMidnight   = $tsMidnight - $ts;
 $hoursToMidnight = floor($secToMidnight / 3600);
-$minToMidnight = floor(($secToMidnight % 3600) / 60);
-echo "До полуночи осталось: " . $hoursToMidnight . " часов и " . $minToMidnight . " минут";
+$minToMidnight   = floor(($secToMidnight % 3600) / 60);
+echo "До полуночи осталось: " . $hoursToMidnight . " часов и " . $minToMidnight . " минут" . "<br><br>";
+
+$headers_keys = [
+    'Язык браузера'             => 'ACCEPT_LANGUAGE',
+    'Страница перехода'         => 'REFERER',
+    'Поддерживаемый контент'    => 'ACCEPT',
+    'Браузер и ОС пользователя' => 'USER_AGENT',
+    'Домен сайта'               => 'HOST',
+];
+
+foreach ($headers_keys as $name => $key) {
+    $server_key = 'HTTP_' . $key;
+
+    if (isset($_SERVER[$server_key])) {
+        $value = $_SERVER[$server_key];
+        print("<b>$name</b>: $value<br>");
+    }
+}
+print_r("<br>");
+
+if (strpos($_SERVER["HTTP_ACCEPT_LANGUAGE"], "en-US") !== false) {
+    echo "В формате мм/дд/гггг для американцев " . $date = date("m.d.Y");
+} else {
+    echo $date = date("d.m.Y");
+}
+
 ?>
 <!doctype html>
 <html lang="en">
