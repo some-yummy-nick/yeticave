@@ -824,7 +824,9 @@ h2 {
 
 .form__error {
   display: none;
+  padding: 5px 0;
   font-size: 11px;
+  line-height: 1.4;
   color: #f84646;
 }
 
@@ -890,7 +892,10 @@ input:invalid .form__error{
 
 .preview {
   display: none;
-  position: absolute;
+}
+
+.preview.active{
+  display: block;
 }
 
 .preview__remove {
