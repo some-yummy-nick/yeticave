@@ -142,7 +142,7 @@ h2 {
 
 .main-header__search {
   position: relative;
-  width: 305px;
+  flex-grow: 1;
   margin-right: 30px;
 }
 
@@ -200,7 +200,11 @@ h2 {
   padding: 0;
   list-style: none;
 }
-
+.user-menu__list_logout{
+  margin-top: 0;
+  width: auto;
+  margin-left: 20px;
+}
 .user-menu__item a {
   color: #879296;
   font-weight: 700;
@@ -985,6 +989,7 @@ input:invalid .form__error{
 }
 
 .lot-item__state {
+  margin-bottom: 34px;
   padding: 30px;
   background-color: #ffffff;
 }
@@ -1071,7 +1076,6 @@ input:invalid .form__error{
 /* История ставок */
 
 .history {
-  margin-top: 34px;
 }
 
 .history h3 {

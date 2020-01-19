@@ -28,14 +28,14 @@ $historyArr = array_unique($historyArr);
 
 setcookie($name, serialize($historyArr), strtotime("+30 days"), "/");
 
-$page_content   = include_template('lot.php', ['lot' => $lot]);
+$page_content   = include_template('lot.php', ['lot' => $lot, 'is_auth' => isset($_SESSION['user'])]);
 $layout_content = include_template(
     'layout.php',
     [
         'content'     => $page_content,
         'title'       => $lot["name"],
         'categories'  => $categories,
-        'is_auth'     => $is_auth,
+        'is_auth'     => isset($_SESSION['user']),
         'user_name'   => $user_name,
         'user_avatar' => $user_avatar,
     ]

@@ -2,12 +2,13 @@
 require_once "functions.php";
 require_once "data.php";
 $historyLots=array();
-$historyIds = unserialize($_COOKIE['history'] );
-foreach ($historyIds as $historyId) {
-
-    foreach ($lots as $lot){
-        if($lot["id"]==$historyId){
-            array_push($historyLots, $lot);
+if(isset($_COOKIE['history']) ){
+    $historyIds = unserialize($_COOKIE['history'] );
+    foreach ($historyIds as $historyId) {
+        foreach ($lots as $lot){
+            if($lot["id"]==$historyId){
+                array_push($historyLots, $lot);
+            }
         }
     }
 }
@@ -19,7 +20,7 @@ $layout_content = include_template(
         'content'     => $page_content,
         'title'       => 'История',
         'categories'  => $categories,
-        'is_auth'     => $is_auth,
+        'is_auth'     => isset($_SESSION['user']),
         'user_name'   => $user_name,
         'user_avatar' => $user_avatar,
     ]

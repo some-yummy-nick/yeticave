@@ -2,31 +2,31 @@
 require_once "functions.php";
 require_once "data.php";
 $errors = [];
-
+$form   = null;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+    $form            = $_POST;
     $required_fields = ["lot-name", "lot-category", "lot-message", "lot-rate", "lot-step", "lot-date"];
     foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
+        if (empty($form[$field])) {
             $errors[$field] = "Поле не заполнено";
         } else {
             if ($field = "lot-rate") {
-                if (!is_numeric($_POST[$field])) {
+                if (!is_numeric($form[$field])) {
                     $errors[$field] = "Начальная цена должна быть числом";
                 }
             }
             if ($field = "lot-step") {
-                if (!is_numeric($_POST[$field])) {
+                if (!is_numeric($form[$field])) {
                     $errors[$field] = "Шаг ставки должен быть числом";
                 }
             }
             if ($field = "lot-category") {
-                if (($_POST[$field]) == "Выберите категорию") {
+                if (($form[$field]) == "Выберите категорию") {
                     $errors[$field] = "Выберите категорию";
                 }
             }
             if ($field = "lot-date") {
-                $date = explode("-", $_POST[$field]);
+                $date = explode("-", $form[$field]);
                 if (!empty($date[0]) && !checkdate($date[1], $date[2], $date[0])) {
                     $errors[$field] = "Введите верный формат даты";
                 }
@@ -53,7 +53,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors["lot-photo"] = "Вы не загрузили файл";
     }
 }
-$page_content = include_template("add-lot.php", ["errors" => $errors, "categories" => $categories]);
+if (! isset($_SESSION['user'])) {
+    http_response_code(403);
+    header('Location: /login.php');
+    exit();
+}
+$page_content = include_template("add.php", ["form" => $form, "errors" => $errors, "categories" => $categories]);
 
 $layout_content = include_template(
     "layout.php",
@@ -61,7 +66,7 @@ $layout_content = include_template(
         "content"     => $page_content,
         "title"       => "Добавить лот",
         "categories"  => $categories,
-        "is_auth"     => $is_auth,
+        "is_auth"     => isset($_SESSION['user']),
         "user_name"   => $user_name,
         "user_avatar" => $user_avatar,
     ]

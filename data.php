@@ -1,19 +1,21 @@
 <?php
-
-$is_auth     = (bool) rand(0, 1);
-$user_name   = 'Константин';
+session_start();
+$user_name = null;
+if (isset($_SESSION['user'])) {
+    $user_name = $_SESSION['user']["name"];
+}
 $user_avatar = 'img/user.jpg';
 $categories  = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 
 // ставки пользователей, которыми надо заполнить таблицу
 $bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
-    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
+    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) . ' minute')],
+    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) . ' hour')],
+    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) . ' hour')],
+    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')],
 ];
 
-$lots        = [
+$lots = [
     [
         "id"       => 0,
         "name"     => "2014 Rossignol District Snowboard",
@@ -55,5 +57,27 @@ $lots        = [
         "category" => "Разное",
         "price"    => "5400",
         "url"      => "img/lot-6.jpg",
+    ],
+];
+
+// пользователи для аутентификации
+$users = [
+    [
+        'email'    => 'ignat.v@gmail.com',
+        'name'     => 'Игнат',
+        'password' => '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka',
+        "real"     => "ug0GdVMi",
+    ],
+    [
+        'email'    => 'kitty_93@li.ru',
+        'name'     => 'Леночка',
+        'password' => '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa',
+        "real"     => "daecNazD",
+    ],
+    [
+        'email'    => 'warrior07@mail.ru',
+        'name'     => 'Руслан',
+        'password' => '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW',
+        "real"     => "oixb3aL8",
     ],
 ];
