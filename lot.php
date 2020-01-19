@@ -18,6 +18,16 @@ if (isset($_GET['lot_id'])) {
 if (!$lot) {
     http_response_code(404);
 }
+$historyArr = [];
+$name       = "history";
+if (isset($_COOKIE[$name])) {
+    $historyArr = unserialize($_COOKIE[$name]);
+}
+array_push($historyArr, $lot_id);
+$historyArr = array_unique($historyArr);
+
+setcookie($name, serialize($historyArr), strtotime("+30 days"), "/");
+
 $page_content   = include_template('lot.php', ['lot' => $lot]);
 $layout_content = include_template(
     'layout.php',

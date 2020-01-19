@@ -20,6 +20,7 @@
             <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
         <a class="main-header__add-lot button" href="/add-lot.php">Добавить лот</a>
+        <a class="main-header__add-lot button" href="/history.php">История просмотров</a>
 
         <nav class="user-menu">
             <? if ($is_auth) : ?>

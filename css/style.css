@@ -142,7 +142,7 @@ h2 {
 
 .main-header__search {
   position: relative;
-  width: 540px;
+  width: 305px;
   margin-right: 30px;
 }
 
@@ -181,6 +181,7 @@ h2 {
 .main-header__add-lot {
   max-width: 160px;
   margin-right: 30px;
+  white-space: nowrap;
 }
 
 .user-menu__list {
