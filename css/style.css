@@ -29,9 +29,13 @@
 }
 
 /* Общее */
+html{
+  height: 100%;
+}
 
 body {
   min-width: 1140px;
+  height: 100%;
   background-color: #dbe6e9;
   font-family: "PT Sans", sans-serif;
   font-weight: 400;
@@ -83,7 +87,17 @@ h2 {
   margin: 0 auto;
   padding: 0 15px;
 }
-
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.content{
+  flex: 1 0 auto;
+}
+footer{
+  flex: 0 0 auto;
+}
 .button {
   display: block;
   padding: 9px 32px;

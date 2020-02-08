@@ -3,24 +3,13 @@
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное
         снаряжение.</p>
     <ul class="promo__list">
-        <li class="promo__item promo__item--boards">
-            <a class="promo__link" href="/pages/all-lots.html">Доски и лыжи</a>
-        </li>
-        <li class="promo__item promo__item--attachment">
-            <a class="promo__link" href="/pages/all-lots.html">Крепления</a>
-        </li>
-        <li class="promo__item promo__item--boots">
-            <a class="promo__link" href="/pages/all-lots.html">Ботинки</a>
-        </li>
-        <li class="promo__item promo__item--clothing">
-            <a class="promo__link" href="/pages/all-lots.html">Одежда</a>
-        </li>
-        <li class="promo__item promo__item--tools">
-            <a class="promo__link" href="/pages/all-lots.html">Инструменты</a>
-        </li>
-        <li class="promo__item promo__item--other">
-            <a class="promo__link" href="/pages/all-lots.html">Разное</a>
-        </li>
+        <? if ($categories): ?>
+            <?php foreach ($categories as $category): ?>
+                <li class="promo__item promo__item--<?= $category["english_name"] ?>">
+                    <a class="promo__link" href=""><?= $category["name"] ?></a>
+                </li>
+            <?php endforeach; ?>
+        <? endif; ?>
     </ul>
 </section>
 <section class="lots">
@@ -32,7 +21,7 @@
             <li class="lots__item lot">
                 <div class="lot__image">
                     <a href="/lot.php?lot_id=<?= $lot["id"] ?>">
-                    <img src="<?= $lot["url"] ?>" width="350" height="260" alt="<?= $lot["name"] ?>">
+                        <img src="<?= $lot["image"] ?>" width="350" height="260" alt="<?= $lot["name"] ?>">
                     </a>
                 </div>
                 <div class="lot__info">

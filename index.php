@@ -2,15 +2,21 @@
 require_once "functions.php";
 require_once "data.php";
 
-$page_content   = include_template('index.php', ['lots' => $lots]);
+if ($categories && $lots) {
+    $title        = "Главная";
+    $page_content = include_template('index.php', ['lots' => $lots, 'categories' => $categories]);
+} else {
+    $error        = mysqli_error($connect);
+    $title        = "Ошибка данных";
+    $page_content = include_template("error.php", ["error" => $error]);
+}
+
 $layout_content = include_template(
     'layout.php',
     [
         'content'     => $page_content,
-        'title'       => 'Главная',
+        'title'       => $title,
         'categories'  => $categories,
-        'user_name'   => $user_name,
-        'user_avatar' => $user_avatar,
     ]
 );
 print($layout_content);

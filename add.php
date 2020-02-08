@@ -3,9 +3,11 @@ require_once "functions.php";
 require_once "data.php";
 $errors = [];
 $form   = null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $form            = $_POST;
     $required_fields = ["lot-name", "lot-category", "lot-message", "lot-rate", "lot-step", "lot-date"];
+
     foreach ($required_fields as $field) {
         if (empty($form[$field])) {
             $errors[$field] = "Поле не заполнено";
@@ -33,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-
     if (!empty($_FILES["lot-photo"]["name"])) {
         $tmp_name  = $_FILES["lot-photo"]["tmp_name"];
         $path      = $_FILES["lot-photo"]["name"];
@@ -47,13 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $errors["lot-photo"] = "Максимальный размер файла: 200Кб";
         } else {
             move_uploaded_file($tmp_name, "uploads/" . $path);
-            $_POST["lot-photo"] = $path;
+            $form["lot-photo"] = $path;
         }
     } else {
         $errors["lot-photo"] = "Вы не загрузили файл";
     }
 }
-if (! isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     http_response_code(403);
     header('Location: /login.php');
     exit();
@@ -67,8 +68,6 @@ $layout_content = include_template(
         "title"       => "Добавить лот",
         "categories"  => $categories,
         "is_auth"     => isset($_SESSION['user']),
-        "user_name"   => $user_name,
-        "user_avatar" => $user_avatar,
     ]
 );
 print($layout_content);

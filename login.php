@@ -1,18 +1,7 @@
 <?php
 require_once "functions.php";
 require_once "data.php";
-function searchUserByEmail($email, $users)
-{
-    $result = null;
-    foreach ($users as $user) {
-        if ($user["email"] == $email) {
-            $result = $user;
-            break;
-        }
-    }
-
-    return $result;
-}
+$success = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $required_fields = ["email", "password"];
@@ -21,9 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($required_fields as $field) {
         if (empty($form[$field])) {
             $errors[$field] = 'Это поле надо заполнить';
+        } else {
+            if ($field = "email") {
+                if (filter_var($form[$field], FILTER_VALIDATE_EMAIL) === false) {
+                    $errors[$field] = "Формат почтового ящика неправильный";
+                }
+            }
         }
     }
-    $user = null;
     if (!count($errors)) {
         $user = searchUserByEmail($form['email'], $users);
 
@@ -41,24 +35,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (count($errors)) {
-        $page_content = include_template('login.php', ['form' => $form, 'errors' => $errors]);
+        $page_content = include_template('login.php', ['form' => $form, 'errors' => $errors, "success" => $success]);
     } else {
         header("Location: /index.php");
         exit();
     }
 } else {
-    $page_content = include_template('login.php', []);
+    if (isset($_GET['success'])) {
+        $success = intval($_GET['success']);
+    }
+
+    $page_content = include_template('login.php', ["success" => $success]);
 }
 
 $layout_content = include_template(
     "layout.php",
     [
-        "content"     => $page_content,
-        "title"       => "Войти",
-        "categories"  => $categories,
-        "is_auth"     => isset($_SESSION['user']),
-        "user_name"   => $user_name,
-        "user_avatar" => $user_avatar,
+        "content"    => $page_content,
+        "title"      => "Войти",
+        "categories" => $categories,
+        "is_auth"    => isset($_SESSION['user']),
     ]
 );
 print($layout_content);

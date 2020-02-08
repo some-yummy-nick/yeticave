@@ -3,32 +3,36 @@ require_once "functions.php";
 require_once "data.php";
 
 $lot = null;
-
-if (isset($_GET['lot_id'])) {
-    $lot_id = $_GET['lot_id'];
-
-    foreach ($lots as $item) {
-        if ($item['id'] == $lot_id) {
-            $lot = $item;
-            break;
-        }
+if (!$connect) {
+    $error        = mysqli_connect_error();
+    $title        = "Ошибка";
+    $page_content = include_template("error.php", ["error" => $error]);
+} else {
+    $id = intval($_GET['lot_id']);
+    $sql_lot = "SELECT l.name, l.id, l.image, l.price, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id "
+        . "WHERE l.id = " . $id;
+    $result_select_lot = mysqli_query($connect, $sql_lot);
+    if (mysqli_num_rows($result_select_lot)){
+        $lot = mysqli_fetch_array($result_select_lot, MYSQLI_ASSOC);
+        $page_content   = include_template('lot.php', ['lot' => $lot, 'is_auth' => isset($_SESSION['user'])]);
+    }else{
+        $error        = mysqli_error($connect);
+        $title        = "Ошибка";
+        $page_content = include_template("error.php", ["error" => $error, "title"=>$title]);
     }
 }
 
-if (!$lot) {
-    http_response_code(404);
-}
 $historyArr = [];
 $name       = "history";
+
 if (isset($_COOKIE[$name])) {
     $historyArr = unserialize($_COOKIE[$name]);
 }
-array_push($historyArr, $lot_id);
+array_push($historyArr, $id);
 $historyArr = array_unique($historyArr);
 
 setcookie($name, serialize($historyArr), strtotime("+30 days"), "/");
 
-$page_content   = include_template('lot.php', ['lot' => $lot, 'is_auth' => isset($_SESSION['user'])]);
 $layout_content = include_template(
     'layout.php',
     [
@@ -36,8 +40,6 @@ $layout_content = include_template(
         'title'       => $lot["name"],
         'categories'  => $categories,
         'is_auth'     => isset($_SESSION['user']),
-        'user_name'   => $user_name,
-        'user_avatar' => $user_avatar,
     ]
 );
 print($layout_content);

@@ -7,7 +7,7 @@
             <li class="lots__item lot">
                 <div class="lot__image">
                     <a href="/lot.php?lot_id=<?= $lot["id"] ?>">
-                    <img src="<?= $lot["url"] ?>" width="350" height="260" alt="<?= $lot["name"] ?>">
+                    <img src="<?= $lot["image"] ?>" width="350" height="260" alt="<?= $lot["name"] ?>">
                     </a>
                 </div>
                 <div class="lot__info">

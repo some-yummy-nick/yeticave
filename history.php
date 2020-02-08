@@ -21,8 +21,6 @@ $layout_content = include_template(
         'title'       => 'История',
         'categories'  => $categories,
         'is_auth'     => isset($_SESSION['user']),
-        'user_name'   => $user_name,
-        'user_avatar' => $user_avatar,
     ]
 );
 print($layout_content);
