@@ -29,7 +29,7 @@
 }
 
 /* Общее */
-html{
+html {
   height: 100%;
 }
 
@@ -87,17 +87,21 @@ h2 {
   margin: 0 auto;
   padding: 0 15px;
 }
-.wrapper{
+
+.wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
-.content{
+
+.content {
   flex: 1 0 auto;
 }
-footer{
+
+footer {
   flex: 0 0 auto;
 }
+
 .button {
   display: block;
   padding: 9px 32px;
@@ -214,11 +218,13 @@ footer{
   padding: 0;
   list-style: none;
 }
-.user-menu__list_logout{
+
+.user-menu__list_logout {
   margin-top: 0;
   width: auto;
   margin-left: 20px;
 }
+
 .user-menu__item a {
   color: #879296;
   font-weight: 700;
@@ -237,6 +243,11 @@ footer{
 .user-menu {
   display: -webkit-flex;
   display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+}
+
+.user-menu__link {
   display: flex;
   align-items: center;
 }
@@ -651,7 +662,7 @@ footer{
 
 .timer {
   position: relative;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   padding: 0 10px;
@@ -669,6 +680,7 @@ footer{
   left: 9px;
   width: 12px;
   height: 12px;
+  margin-right: 5px;
   background: url("../img/timer.svg") 0 0 no-repeat;
 }
 
@@ -849,7 +861,7 @@ footer{
   color: #f84646;
 }
 
-input:invalid .form__error{
+input:invalid .form__error {
   display: block;
 }
 
@@ -913,7 +925,7 @@ input:invalid .form__error{
   display: none;
 }
 
-.preview.active{
+.preview.active {
   display: block;
 }
 
@@ -1012,7 +1024,6 @@ input:invalid .form__error{
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
-  width: 80px;
   margin-bottom: 19px;
   box-sizing: border-box;
 }
@@ -1080,9 +1091,7 @@ input:invalid .form__error{
 }
 
 .lot-item__form .button {
-  -webkit-align-self: flex-end;
-  -ms-flex-item-align: end;
-  align-self: flex-end;
+  margin-top: 20px;
   padding: 6px 20px 7px;
   height: 38px;
 }
@@ -1180,6 +1189,7 @@ input:invalid .form__error{
   margin: 0;
   font-size: 13px;
   line-height: 13px;
+  font-weight: 400;
 }
 
 .rates__img {
@@ -1223,7 +1233,6 @@ input:invalid .form__error{
 }
 
 .rates__timer .timer {
-  width: 82px;
   box-sizing: border-box;
 }
 

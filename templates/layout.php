@@ -27,14 +27,16 @@
 
                 <nav class="user-menu">
                     <? if (isset($_SESSION['user'])) : ?>
-                        <div class="user-menu__image">
-                            <img
-                                src="<?= $_SESSION['user']["avatar"] ?>"
-                                width="40" height="40" alt="Пользователь">
-                        </div>
-                        <div class="user-menu__logged">
-                            <p><?= $_SESSION['user']["name"] ?></p>
-                        </div>
+                        <a class="user-menu__link" href="/my-lots.php">
+                            <div class="user-menu__image">
+                                <img
+                                    src="<?= $_SESSION['user']["avatar"] ?>"
+                                    width="40" height="40" alt="Пользователь">
+                            </div>
+                            <div class="user-menu__logged">
+                                <p><?= $_SESSION['user']["name"] ?></p>
+                            </div>
+                        </a>
                         <ul class="user-menu__list user-menu__list_logout">
                             <li class="user-menu__item">
                                 <a href="logout.php">Выход</a>

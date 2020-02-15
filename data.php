@@ -1,15 +1,16 @@
 <?php
 session_start();
 require_once "functions.php";
+$app_name   = "Yeticave";
 $categories = [];
-$lots = [];
-$users=[];
+$lots       = [];
+$users      = [];
 
-$host        = "localhost";
-$user        = "root";
-$password    = "";
-$database    = "yeticave";
-$connect     = mysqli_connect($host, $user, $password, $database);
+$host     = "localhost";
+$user     = "root";
+$password = "";
+$database = "yeticave";
+$connect  = mysqli_connect($host, $user, $password, $database);
 
 //$sql = "INSERT INTO users SET email = 'dev@gmail.com',password = 'secret'";
 //
@@ -39,34 +40,34 @@ $connect     = mysqli_connect($host, $user, $password, $database);
 //}
 if ($connect) {
     $sql_select_categories    = "SELECT * FROM categories";
-    $sql_select_lots    = "SELECT l.name, l.id, l.image, l.price, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id ORDER BY l.date DESC";
-    $sql_select_users    = "SELECT * FROM users";
+    $sql_select_lots          = "SELECT l.name, l.id, l.image, l.price, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id ORDER BY l.date_start DESC";
+    $sql_select_users         = "SELECT * FROM users";
     $result_select_categories = mysqli_query($connect, $sql_select_categories);
-    $result_select_lots = mysqli_query($connect, $sql_select_lots);
-    $result_select_users = mysqli_query($connect, $sql_select_users);
+    $result_select_lots       = mysqli_query($connect, $sql_select_lots);
+    $result_select_users      = mysqli_query($connect, $sql_select_users);
     if ($result_select_categories) {
-        $categories   = mysqli_fetch_all($result_select_categories, MYSQLI_ASSOC);
+        $categories = mysqli_fetch_all($result_select_categories, MYSQLI_ASSOC);
     }
-    if($result_select_lots){
-        $lots   = mysqli_fetch_all($result_select_lots, MYSQLI_ASSOC);
+    if ($result_select_lots) {
+        $lots = mysqli_fetch_all($result_select_lots, MYSQLI_ASSOC);
     }
-    if($result_select_users){
-        $users  = mysqli_fetch_all($result_select_users, MYSQLI_ASSOC);
+    if ($result_select_users) {
+        $users = mysqli_fetch_all($result_select_users, MYSQLI_ASSOC);
     }
 } else {
-    $error        = mysqli_connect_error();
-    $title        = "Ошибка соединения с базой";
+    $error = mysqli_connect_error();
+    $title = "Ошибка соединения с базой";
     http_response_code(404);
-    $page_content = include_template("error.php", ['title'=>$title,"error" => $error]);
+    $page_content = include_template("error.php", ["title" => $title, "error" => $error]);
 }
 
 // ставки пользователей, которыми надо заполнить таблицу
-$bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) . ' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) . ' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) . ' hour')],
-    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')],
-];
+//$bets = [
+//    ["name" => "Иван", "price" => 11500, "ts" => strtotime("-" . rand(1, 50) . " minute")],
+//    ["name" => "Константин", "price" => 11000, "ts" => strtotime("-" . rand(1, 18) . " hour")],
+//    ["name" => "Евгений", "price" => 10500, "ts" => strtotime("-" . rand(25, 50) . " hour")],
+//    ["name" => "Семён", "price" => 10000, "ts" => strtotime("last week")],
+//];
 //
 //$lots = [
 //    [
@@ -112,4 +113,3 @@ $bets = [
 //        "url"      => "img/lot-6.jpg",
 //    ],
 //];
-

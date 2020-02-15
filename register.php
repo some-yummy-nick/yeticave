@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     foreach ($required_fields as $field) {
         if (empty($form[$field])) {
-            $errors[$field] = 'Это поле надо заполнить';
+            $errors[$field] = "Это поле надо заполнить";
         } else {
             if ($field = "email") {
                 if (filter_var($form[$field], FILTER_VALIDATE_EMAIL) === false) {
@@ -40,37 +40,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (!count($errors)) {
-        $sql_user      = 'INSERT INTO users (`email`, `password`, `name`, `contacts`, `date`, `avatar`) VALUES (?, ?, ?, ?,NOW(),?)';
-        $password_cash = password_hash($form['password'], PASSWORD_DEFAULT);
+        $sql_user      = "INSERT INTO users (`email`, `password`, `name`, `contacts`, `date`, `avatar`) VALUES (?, ?, ?, ?,NOW(),?)";
+        $password_cash = password_hash($form["password"], PASSWORD_DEFAULT);
         $avatar        = "img/user.jpg";
-        if (isset($form['user-photo'])) {
-            $avatar = "uploads/" . $form['user-photo'];
+        if (isset($form["user-photo"])) {
+            $avatar = "uploads/" . $form["user-photo"];
         }
         $stmt_user = db_get_prepare_stmt(
             $connect,
             $sql_user,
-            [$form['email'], $password_cash, $form['name'], $form['contacts'], $avatar]
+            [$form["email"], $password_cash, $form["name"], $form["contacts"], $avatar]
         );
         $res       = mysqli_stmt_execute($stmt_user);
     }
 
     if (count($errors)) {
-        $page_content = include_template('register.php', ['form' => $form, 'errors' => $errors]);
+        $page_content = include_template("register.php", ["form" => $form, "errors" => $errors]);
     } else {
-        header('Location: /login.php?success=1');
+        header("Location: /login.php?success=1");
         exit();
     }
 } else {
-    $page_content = include_template('register.php', []);
+    $page_content = include_template("register.php", []);
 }
 
 $layout_content = include_template(
     "layout.php",
     [
         "content"    => $page_content,
-        "title"      => "Регистрация",
+        "title"      => $app_name . " | Регистрация",
         "categories" => $categories,
-        "is_auth"    => isset($_SESSION['user']),
+        "is_auth"    => isset($_SESSION["user"]),
     ]
 );
 print($layout_content);

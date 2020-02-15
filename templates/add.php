@@ -1,4 +1,4 @@
-<form class="form form--add-lot container<?= !empty($errors) ? " form--invalid" : "" ?> " method="post"
+<form class="form form--add-lot container<?= !empty($errors) ? " form--invalid" : "" ?>" method="post"
       enctype="multipart/form-data">
     <h2>Добавление лота</h2>
     <div class="form__container-two">
@@ -16,7 +16,7 @@
                 <option>Выберите категорию</option>
                 <?php foreach ($categories as $category): ?>
                     <option
-                        value="<?= $form["lot-category"] == $category["name"] ? $form["lot-category"] : $category["name"] ?>" <?= ($category["name"] == $form["lot-category"]) ? "selected" : "" ?>><?= $category["name"] ?></option>
+                        value="<?= $category["id"] ?>" <?= ($category["name"] == $form["lot-category"]) ? "selected" : "" ?>><?= $category["name"] ?></option>
                 <?php endforeach; ?>
             </select>
             <? if (isset($errors["lot-category"])) : ?>
@@ -72,12 +72,12 @@
                 <span class="form__error"><?= $errors["lot-step"] ?></span>
             <? endif; ?>
         </div>
-        <div class="form__item <?= isset($errors["lot-date"]) ? " form__item--invalid" : "" ?>">
-            <label for="lot-date">Дата окончания торгов*</label>
-            <input class="form__input-date" id="lot-date" type="date" name="lot-date" required
-                   value="<?= isset($form["lot-date"]) ? $form["lot-date"] : "" ?>">
-            <? if (isset($errors["lot-date"])) : ?>
-                <span class="form__error"><?= $errors["lot-date"] ?></span>
+        <div class="form__item <?= isset($errors["lot-date-end"]) ? " form__item--invalid" : "" ?>">
+            <label for="lot-date-end">Дата окончания торгов*</label>
+            <input class="form__input-date" id="lot-date-end" type="date" name="lot-date-end" required
+                   value="<?= isset($form["lot-date-end"]) ? $form["lot-date-end"] : "" ?>">
+            <? if (isset($errors["lot-date-end"])) : ?>
+                <span class="form__error"><?= $errors["lot-date-end"] ?></span>
             <? endif; ?>
         </div>
     </div>

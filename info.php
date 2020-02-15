@@ -20,9 +20,9 @@ $myFriendsToString = implode(",", $myFriends);
 debug($myFriendsToString);
 
 $gif = [
-    'gif'         => '/uploads/preview_gif58d28ce80e3a9.gif',
-    'title'       => 'Енотик',
-    'likes_count' => 0,
+    "gif"         => "/uploads/preview_gif58d28ce80e3a9.gif",
+    "title"       => "Енотик",
+    "likes_count" => 0,
 ];
 // получить все ключи в ассоциативном массиве
 debug(array_keys($gif));
@@ -68,15 +68,15 @@ $minToMidnight   = floor(($secToMidnight % 3600) / 60);
 echo "До полуночи осталось: " . $hoursToMidnight . " часов и " . $minToMidnight . " минут" . "<br><br>";
 
 $headers_keys = [
-    'Язык браузера'             => 'ACCEPT_LANGUAGE',
-    'Страница перехода'         => 'REFERER',
-    'Поддерживаемый контент'    => 'ACCEPT',
-    'Браузер и ОС пользователя' => 'USER_AGENT',
-    'Домен сайта'               => 'HOST',
+    "Язык браузера"             => "ACCEPT_LANGUAGE",
+    "Страница перехода"         => "REFERER",
+    "Поддерживаемый контент"    => "ACCEPT",
+    "Браузер и ОС пользователя" => "USER_AGENT",
+    "Домен сайта"               => "HOST",
 ];
 
 foreach ($headers_keys as $name => $key) {
-    $server_key = 'HTTP_' . $key;
+    $server_key = "HTTP_" . $key;
 
     if (isset($_SERVER[$server_key])) {
         $value = $_SERVER[$server_key];
@@ -90,6 +90,7 @@ if (strpos($_SERVER["HTTP_ACCEPT_LANGUAGE"], "en-US") !== false) {
 } else {
     echo $date = date("d.m.Y");
 }
+print_r("<br><br>");
 
 ?>
 <!doctype html>
@@ -105,15 +106,15 @@ if (strpos($_SERVER["HTTP_ACCEPT_LANGUAGE"], "en-US") !== false) {
 <h1>Информация о пользователе</h1>
 <dl>
     <dt><strong>Ваш IP адрес</strong></dt>
-    <dd><em><?= $_SERVER['REMOTE_ADDR'] ?></em></dd>
+    <dd><em><?= $_SERVER["REMOTE_ADDR"] ?></em></dd>
 </dl>
 <dl>
     <dt><strong>Операционная система:</strong></dt>
-    <dd><em><?= $browser['platform'] ?></em></dd>
+    <dd><em><?= $browser["platform"] ?></em></dd>
 </dl>
 <dl>
     <dt><strong>Браузер:</strong></dt>
-    <dd><em><?= $browser['browser'] ?></em></dd>
+    <dd><em><?= $browser["browser"] ?></em></dd>
 </dl>
 </body>
 </html>
