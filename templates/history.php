@@ -1,3 +1,6 @@
+<?
+$eightHoursInSeconds = 28800;
+?>
 <section class="lots">
     <div class="lots__header">
         <h2>История просмотров</h2>
@@ -20,9 +23,9 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?= setNumberToFormat($lot["price"]) ?><b class="rub">р</b></span>
                         </div>
-                        <div class="lot__timer timer">
-
-                        </div>
+                        <div class="lot__timer timer<?= (strtotime($lot["date_end"]) - time(
+                            )) < $eightHoursInSeconds ? " timer--finishing" : "" ?>">
+                            <? showTimeEnd($lot["date_end"]) ?></div>
                     </div>
                 </div>
             </li>

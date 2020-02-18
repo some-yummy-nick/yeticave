@@ -12,8 +12,8 @@ if (!$connect) {
     $page_content = include_template("error.php", ["error" => $error]);
 } else {
     $id                 = intval($_GET["lot_id"]);
-    $sql_lot            = "SELECT l.name, l.id, l.image, l.date_end, l.price, l.step, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id "
-        . "WHERE l.id = " . $id;
+    $sql_lot            = "SELECT l.name, l.id, l.image, l.date_end, l.price, l.step, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id"
+        . " WHERE l.id = " . $id;
     $result_select_lot  = mysqli_query($connect, $sql_lot);
     $sql_bet            = "SELECT b.price FROM bets b JOIN lots l ON b.lot_id = l.id " . "WHERE l.id = " . $id . " ORDER BY b.date DESC";
     $result_select_bet  = mysqli_query($connect, $sql_bet);

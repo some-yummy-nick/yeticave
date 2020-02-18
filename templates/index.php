@@ -6,7 +6,7 @@
         <? if ($categories): ?>
             <?php foreach ($categories as $category): ?>
                 <li class="promo__item promo__item--<?= $category["english_name"] ?>">
-                    <a class="promo__link" href=""><?= $category["name"] ?></a>
+                    <a class="promo__link" href="/lots.php?category_id=<?= $category["id"] ?>"><?= $category["name"] ?></a>
                 </li>
             <?php endforeach; ?>
         <? endif; ?>

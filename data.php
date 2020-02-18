@@ -40,7 +40,7 @@ $connect  = mysqli_connect($host, $user, $password, $database);
 //}
 if ($connect) {
     $sql_select_categories    = "SELECT * FROM categories";
-    $sql_select_lots          = "SELECT l.name, l.id, l.image, l.price, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id ORDER BY l.date_start DESC";
+    $sql_select_lots          = "SELECT l.name, l.id, l.image, l.price, l.date_end, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id ORDER BY l.date_start DESC";
     $sql_select_users         = "SELECT * FROM users";
     $result_select_categories = mysqli_query($connect, $sql_select_categories);
     $result_select_lots       = mysqli_query($connect, $sql_select_lots);

@@ -27,7 +27,7 @@ $eightHoursInSeconds = 28800;
                     <div class="lot-item__state">
                         <div class="lot-item__timer timer <?= (strtotime($lot["date_end"]) - time(
                             )) < $eightHoursInSeconds ? " timer--finishing" : "" ?>">
-                            <? showTimeEnd($lot["date_end"])?>
+                            <span><? showTimeEnd($lot["date_end"])?></span>
                         </div>
                         <div class="lot-item__cost-state">
                             <div class="lot-item__rate">
