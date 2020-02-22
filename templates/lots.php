@@ -32,9 +32,10 @@ $eightHoursInSeconds = 28800;
                 </li>
             <?php endforeach; ?>
         </ul>
+        <?= $pagination; ?>
     <? else : ?>
         <p>Лотов пока нет</p>
     <? endif; ?>
 </section>
-<?= $pagination; ?>
+
 

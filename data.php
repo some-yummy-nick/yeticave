@@ -39,21 +39,29 @@ $connect  = mysqli_connect($host, $user, $password, $database);
 //    print(" кол-во записей в таблице: " . $records_count . "</br>");
 //}
 if ($connect) {
+    mysqli_query($connect, "START TRANSACTION");
     $sql_select_categories    = "SELECT * FROM categories";
     $sql_select_lots          = "SELECT l.name, l.id, l.image, l.price, l.date_end, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id ORDER BY l.date_start DESC";
     $sql_select_users         = "SELECT * FROM users";
-    $result_select_categories = mysqli_query($connect, $sql_select_categories);
-    $result_select_lots       = mysqli_query($connect, $sql_select_lots);
-    $result_select_users      = mysqli_query($connect, $sql_select_users);
-    if ($result_select_categories) {
-        $categories = mysqli_fetch_all($result_select_categories, MYSQLI_ASSOC);
+    if ($sql_select_categories && $sql_select_lots && $sql_select_users) {
+        mysqli_query($connect, "COMMIT");
+        $result_select_categories = mysqli_query($connect, $sql_select_categories);
+        $result_select_lots       = mysqli_query($connect, $sql_select_lots);
+        $result_select_users      = mysqli_query($connect, $sql_select_users);
+        if ($result_select_categories) {
+            $categories = mysqli_fetch_all($result_select_categories, MYSQLI_ASSOC);
+        }
+        if ($result_select_lots) {
+            $lots = mysqli_fetch_all($result_select_lots, MYSQLI_ASSOC);
+        }
+        if ($result_select_users) {
+            $users = mysqli_fetch_all($result_select_users, MYSQLI_ASSOC);
+        }
     }
-    if ($result_select_lots) {
-        $lots = mysqli_fetch_all($result_select_lots, MYSQLI_ASSOC);
+    else {
+        mysqli_query($connect, "ROLLBACK");
     }
-    if ($result_select_users) {
-        $users = mysqli_fetch_all($result_select_users, MYSQLI_ASSOC);
-    }
+
 } else {
     $error = mysqli_connect_error();
     $title = "Ошибка соединения с базой";

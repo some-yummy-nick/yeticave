@@ -24,12 +24,14 @@ if (!$connect) {
         . " ORDER BY l.date_start DESC"
         . " LIMIT $page_items OFFSET $offset";
     $sql_category           = "SELECT c.name FROM categories c WHERE c.id = " . $category_id;
-    $result_select_lots     = mysqli_query($connect, $sql_lots);
+
+//    $result_select_lots     = mysqli_query($connect, $sql_lots);
     $result_select_category = mysqli_query($connect, $sql_category);
 
-    if (mysqli_num_rows($result_select_lots)) {
-        $lots = mysqli_fetch_all($result_select_lots, MYSQLI_ASSOC);
-    }
+//    if (mysqli_num_rows($result_select_lots)) {
+//        $lots = mysqli_fetch_all($result_select_lots, MYSQLI_ASSOC);
+//    }
+    $lots = cache_get_data($connect, $sql_lots,[],"lots");
 
     if (mysqli_num_rows($result_select_category)) {
         $category = mysqli_fetch_array($result_select_category, MYSQLI_ASSOC);
