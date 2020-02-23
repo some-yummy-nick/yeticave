@@ -18,7 +18,12 @@ $eightHoursInSeconds = 28800;
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">
-                                    <?= $lot["count_bet"] ? $lot["count_bet"] . " ставок" : "Стартовая цена" ?>
+                                      <span class="lot__amount">
+                                    <?= $lot["count_bet"] ? $lot["count_bet"] . " " . getWord(
+                                            $lot["count_bet"],
+                                            ["ставка", "ставки", "ставок"]
+                                        ) : "Стартовая цена" ?>
+                                    </span>
                                     </span>
                                 <span class="lot__cost"><?= setNumberToFormat($lot["price"]) ?><b
                                         class="rub">р</b></span>

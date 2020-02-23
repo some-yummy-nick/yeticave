@@ -1,46 +1,44 @@
-<?
-$eightHoursInSeconds = 28800;
-?>
-<section class="rates container">
-    <h2>Мои ставки</h2>
-    <? if ($lots) : ?>
+
+    <section class="rates container">
+        <h2>Мои ставки</h2>
         <table class="rates__list">
-            <?php foreach ($lots as $lot): ?>
-                <tr class="rates__item <?= (strtotime($lot["date_end"]) - time() < 0) ? "rates__item--end" : "" ?>
-           <? //= $lot["winner_id"] ? "rates__item--win" : "" ?>
-">
+            <?php foreach ($lots as $key => $item) : ?>
+                <tr class="rates__item <?= (intval($item['winner_id']) === intval($user_id)) ? 'rates__item--win' : ''; ?><?= ((strtotime($item['date_end']) < strtotime('now')) && (intval($item['winner_id']) !== intval($user_id))) ? 'rates__item--end' : ''; ?>">
                     <td class="rates__info">
                         <div class="rates__img">
-                            <img src="<?= $lot["image"] ?>" width="54" height="40" alt="<?= $lot["name"] ?>">
+                            <img src="<?= $item['image']; ?>" width="54" height="40" alt="Сноуборд">
                         </div>
-                        <h3 class="rates__title">
-                            <a href="/lot.php?lot_id=<?= $lot["id"] ?>">
-                                <?= $lot["name"] ?>
-                            </a>
-                            <? //= $lot["winner_id"] ? "<p>" . $lot["contacts"] . "</p>" : "" ?>
-                        </h3>
+                        <div>
+                            <h3 class="rates__title"><a
+                                    href="lot.php?lot_id=<?= $item['lot_id']; ?>"><?= htmlspecialchars($item['name']); ?></a>
+                            </h3>
+                            <?php if (intval($item['winner_id']) === intval($user_id)) : ?>
+                                <p><?= $item['contacts']; ?></p>
+                            <?php endif; ?>
+                        </div>
                     </td>
                     <td class="rates__category">
-                        <?= $lot["category"] ?>
+                        <?= $item['category']; ?>
                     </td>
                     <td class="rates__timer">
-                        <? // if ($lot["winner_id"]): ?>
-                        <!--<div class="timer timer--win">Ставка выиграла</div>-->
-                        <? // else: ?>
-                        <? if (strtotime($lot["date_end"]) - time() < 0) : ?>
+                        <?php if (strtotime($item['date_end']) > time()) : ?>
+                            <div
+                                class="timer <?= (strtotime($item['date_end']) - strtotime('now') <= $time_to_close && strtotime($item['date_end']) - strtotime('now') > 0) ? 'timer--finishing' : '' ?>">
+                                <?= get_time_completion($item['date_end']); ?>
+                            </div>
+                        <?php elseif (intval($item['winner_id']) === intval($user_id)) : ?>
+                            <div class="timer timer--win">Ставка выиграла</div>
+                        <?php else : ?>
                             <div class="timer timer--end">Торги окончены</div>
-                        <? else: ?>
-                            <div class="timer<?= (strtotime($lot["date_end"]) - time(
-                                )) < $eightHoursInSeconds ? " timer--finishing" : "" ?>">
-                                <? showTimeEnd($lot["date_end"]) ?></div>
-                        <? endif; ?>
+                        <?php endif; ?>
                     </td>
-                    <td class="rates__price"><?= setNumberToFormat($lot["price"]) ?> р</td>
-                    <td class="rates__time"><?= showDate($lot["time"]) ?></td>
+                    <td class="rates__price">
+                        <?= get_formatted_amount($item['price']).' р'; ?>
+                    </td>
+                    <td class="rates__time">
+                        <?= show_time(strtotime($item['date'])); ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </table>
-    <? else:?>
-    <p>Ставок пока нет</p>
-    <? endif; ?>
-</section>
+    </section>

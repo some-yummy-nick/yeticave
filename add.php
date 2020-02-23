@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($res_add) {
             $lot_id = mysqli_insert_id($connect);
-//            cache_del_data([],"lots");
+            cache_del_data([],"lots");
             header("Location: lot.php?lot_id=" . $lot_id);
         }
     }

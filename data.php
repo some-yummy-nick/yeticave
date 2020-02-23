@@ -58,7 +58,28 @@ if ($connect) {
             $users = mysqli_fetch_all($result_select_users, MYSQLI_ASSOC);
         }
     }
-    else {
+    $sql_get_winner = "SELECT l.id, l.name, bets.user_id FROM bets JOIN lots l ON bets.lot_id = l.id WHERE bets.id IN (SELECT MAX(id) FROM bets GROUP BY lot_id) && l.date_end <= NOW() && l.winner_id is NULL";
+    $result_get_winner = mysqli_query($connect, $sql_get_winner);
+    if ($result_get_winner) {
+        $lot = mysqli_fetch_all($result_get_winner, MYSQLI_ASSOC);
+        if (!empty($lot)) {
+            foreach ($lot as $key => $value) {
+                $sql  = "UPDATE lots SET winner_id = ?
+            WHERE id = ?";
+                $stmt = db_get_prepare_stmt($connect, $sql, [$value['user_id'], $value['id']]);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+
+                if ($result) {
+                    $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                }
+            }
+        }
+    }
+
+
+
+else {
         mysqli_query($connect, "ROLLBACK");
     }
 

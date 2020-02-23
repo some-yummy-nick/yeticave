@@ -1,5 +1,5 @@
 <?php
-define ('CACHE_DIR', "");
+define ('CACHE_DIR', "/Open/OSPanel/domains/yeticave/cash");
 
 function debug($arr)
 {
@@ -183,7 +183,83 @@ function showDate($date)
 
     return false;
 }
+/**
+ * Форматирует число в соответствии с заданием
+ *
+ * @param $price число для форматирования
+ * @return string $price результат — отформатированное число
+ */
+function get_formatted_amount($price): string
+{
+    $price = ceil($price);
 
+    if ($price >= 1000) {
+        $price = number_format($price, 0, '', ' ');
+    }
+
+    return $price;
+}
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
+{
+    $number = (int)$number;
+    $mod10 = $number % 10;
+    $mod100 = $number % 100;
+
+    switch (true) {
+        case ($mod100 >= 11 && $mod100 <= 20):
+            return $many;
+
+        case ($mod10 > 5):
+            return $many;
+
+        case ($mod10 === 1):
+            return $one;
+
+        case ($mod10 >= 2 && $mod10 <= 4):
+            return $two;
+
+        default:
+            return $many;
+    }
+}
+/**
+ * Показывает сколько времени назад была сделана ставка
+ * @param $time время в формате unix
+ * @return string результат
+ */
+function show_time($time)
+{
+    $time_ago = time() - $time;
+    if ($time_ago < 3600) {
+        return intval($time_ago / 60).' '.get_noun_plural_form($time_ago / 60, 'минута', 'минуты',
+                                                               'минут').' назад';
+    } elseif ($time_ago < 86400) {
+        return intval($time_ago / 3600).' '.get_noun_plural_form($time_ago / 3600, 'час', 'часа',
+                                                                 'часов').' назад';
+    }
+    return date('d.m.y', $time).' в '.date('H:i', $time);
+}
+
+/**
+ * Время до истечения лота
+ *
+ * @param $date_completion дата окончания
+ * @return string $time время в нужном виде
+ */
+function get_time_completion($date_completion): string
+{
+    $time = strtotime($date_completion) - strtotime('now');
+    if ($time < 86400) {
+        $time = gmdate('H:i', $time);
+    } elseif ($time <= 432000) {
+        $time = intval($time / 86400).' дн.';
+    } else {
+        $time = gmdate("d.m.y",
+                       strtotime($date_completion) + 86400);
+    }
+
+    return $time;
+}
 
 function showTimeEnd($date)
 {
