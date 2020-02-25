@@ -24,7 +24,7 @@
                         <?php if (strtotime($item['date_end']) > time()) : ?>
                             <div
                                 class="timer <?= (strtotime($item['date_end']) - strtotime('now') <= $time_to_close && strtotime($item['date_end']) - strtotime('now') > 0) ? 'timer--finishing' : '' ?>">
-                                <?= get_time_completion($item['date_end']); ?>
+                                <span><? showTimeEnd($item['date_end']); ?></span>
                             </div>
                         <?php elseif (intval($item['winner_id']) === intval($user_id)) : ?>
                             <div class="timer timer--win">Ставка выиграла</div>

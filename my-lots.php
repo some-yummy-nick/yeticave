@@ -3,18 +3,11 @@ require_once "functions.php";
 require_once "data.php";
 $lots = null;
 $user_id = $_SESSION["user"]["id"];
-$time_to_close = 3600;
 if (!$connect) {
     $error        = mysqli_connect_error();
     $title        = "Ошибка";
     $page_content = include_template("error.php", ["error" => $error]);
 } else {
-//    $sql_lots =  "SELECT b.date AS time, b.price, l.id, "
-//                                ."l.name, l.date_end, l.image, l.winner_id, c.name AS category, u.contacts "
-//                                ."FROM bets b JOIN lots l ON b.lot_id = l.id "
-//                                ."JOIN categories c ON l.category_id = c.id "
-//                                ."JOIN users u ON b.user_id = u.id "
-//                                ."WHERE b.user_id = " . $_SESSION["user"]["id"] . " ORDER BY b.date DESC";
     $sql_lots           = "SELECT bets.date, bets.price, bets.lot_id, lots.name, lots.category_id, users.contacts,
  categories.name AS category,lots.date_end, lots.winner_id, lots.image FROM bets
         JOIN lots  ON bets.lot_id = lots.id

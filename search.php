@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $form       = $_GET;
     $search     = $form['q'] ? trim($form['q']) : "";
     $cur_page   = isset($_GET['page']) ? intval($_GET["page"]) : 1;
-    $page_items = 1;
     $offset     = ($cur_page - 1) * $page_items;
 
     if (empty($form["q"])) {

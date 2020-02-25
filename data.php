@@ -5,6 +5,8 @@ $app_name   = "Yeticave";
 $categories = [];
 $lots       = [];
 $users      = [];
+$time_to_close = 28800;
+$page_items = 9;
 
 $host     = "localhost";
 $user     = "root";

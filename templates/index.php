@@ -35,12 +35,16 @@ $eightHoursInSeconds = 28800;
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= setNumberToFormat($lot["price"]) ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?= get_formatted_amount($lot["price"]) ?><b class="rub">р</b></span>
                         </div>
-                        <div class="lot__timer timer<?= (strtotime($lot["date_end"]) - time(
-                            )) < $eightHoursInSeconds ? " timer--finishing" : "" ?>">
-                            <span><? showTimeEnd($lot["date_end"]) ?></span>
-                        </div>
+                        <?php if (strtotime($lot['date_end']) > time()) : ?>
+                            <div
+                                class="lot__timer timer <?= (strtotime($lot['date_end']) - strtotime('now') <= $time_to_close && strtotime($lot['date_end']) - strtotime('now') > 0) ? 'timer--finishing' : '' ?>">
+                                <span><? showTimeEnd($lot['date_end']); ?></span>
+                            </div>
+                        <?php else : ?>
+                            <div class="lot-item__timer timer timer--end">Торги окончены</div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>

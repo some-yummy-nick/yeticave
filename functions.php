@@ -29,11 +29,6 @@ function include_template($name, $data = null)
     return ob_get_clean();
 }
 
-function setNumberToFormat($price)
-{
-    return number_format($price, 0, "", " ");
-}
-
 function searchUserByEmail($email, $users)
 {
     $result = null;
@@ -143,7 +138,7 @@ function is_cache_expired($filename, $ttl) {
     return $res;
 }
 
-function cache_get_data($link, $sql, $params, $tag, $ttl = 86400) {
+function cache_get_data($link, $sql, $params, $tag, $ttl = 1) {
     $filename = cache_get_key($sql, $params, $tag) . '.json';
     $filepath = CACHE_DIR . DIRECTORY_SEPARATOR . $filename;
 
@@ -243,24 +238,8 @@ function show_time($time)
 /**
  * Время до истечения лота
  *
- * @param $date_completion дата окончания
- * @return string $time время в нужном виде
+ * @param $date_end дата окончания
  */
-function get_time_completion($date_completion): string
-{
-    $time = strtotime($date_completion) - strtotime('now');
-    if ($time < 86400) {
-        $time = gmdate('H:i', $time);
-    } elseif ($time <= 432000) {
-        $time = intval($time / 86400).' дн.';
-    } else {
-        $time = gmdate("d.m.y",
-                       strtotime($date_completion) + 86400);
-    }
-
-    return $time;
-}
-
 function showTimeEnd($date)
 {
     $seconds = strtotime($date) - time();

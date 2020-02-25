@@ -23,26 +23,30 @@ $eightHoursInSeconds = 28800;
                     равнодушным.</p>
             </div>
             <div class="lot-item__right">
-                <? if ($is_auth) : ?>
+                <? if ($is_auth && strtotime($lot['date_end']) > time()) : ?>
                     <div class="lot-item__state">
-                        <div class="lot-item__timer timer <?= (strtotime($lot["date_end"]) - time(
-                            )) < $eightHoursInSeconds ? " timer--finishing" : "" ?>">
-                            <span><? showTimeEnd($lot["date_end"])?></span>
+                        <div
+                            class="lot__timer timer <?= (strtotime($lot['date_end']) - strtotime(
+                                    'now'
+                                ) <= $time_to_close && strtotime($lot['date_end']) - strtotime(
+                                    'now'
+                                ) > 0) ? 'timer--finishing' : '' ?>">
+                            <span><? showTimeEnd($lot['date_end']); ?></span>
                         </div>
                         <div class="lot-item__cost-state">
                             <div class="lot-item__rate">
                                 <span class="lot-item__amount">Текущая цена</span>
-                                <span class="lot-item__cost"><?= setNumberToFormat($lot["price"]) ?></span>
+                                <span class="lot-item__cost"><?= get_formatted_amount($lot["price"]) ?></span>
                             </div>
                             <div class="lot-item__min-cost">
-                                Мин. ставка <span><?= setNumberToFormat($lot["price"] + $lot["step"]) ?> р</span>
+                                Мин. ставка <span><?= get_formatted_amount($lot["price"] + $lot["step"]) ?> р</span>
                             </div>
                         </div>
                         <form class="lot-item__form<?= !empty($errors) ? " form--invalid" : "" ?>" method="post">
                             <p class="lot-item__form-item<?= isset($errors["cost"]) ? " form__item--invalid" : "" ?>">
                                 <label for="cost">Ваша ставка</label>
                                 <input id="cost" type="text" name="cost"
-                                       placeholder="<?= setNumberToFormat($lot["price"] + $lot["step"]) ?>">
+                                       placeholder="<?= get_formatted_amount($lot["price"] + $lot["step"]) ?>">
                                 <? if (isset($errors["cost"])) : ?>
                                     <span class="form__error"><?= $errors["cost"] ?></span>
                                 <? endif; ?>
@@ -58,7 +62,7 @@ $eightHoursInSeconds = 28800;
                             <?php foreach ($bets as $bet): ?>
                                 <tr class="history__item">
                                     <td class="history__name"><?= $bet["name"] ?></td>
-                                    <td class="history__price"><?= setNumberToFormat($bet["price"]) ?> р</td>
+                                    <td class="history__price"><?= get_formatted_amount($bet["price"]) ?> р</td>
                                     <td class="history__time"><?= showDate($bet["date"]) ?></td>
                                 </tr>
                             <?php endforeach; ?>

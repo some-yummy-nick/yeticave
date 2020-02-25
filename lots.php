@@ -13,13 +13,12 @@ if (!$connect) {
 } else {
     $category_id                     = intval($_GET["category_id"]);
     $cur_page               = isset($_GET['page']) ? intval($_GET["page"]) : 1;
-    $page_items             = 1;
     $offset                 = ($cur_page - 1) * $page_items;
     $sql_lots               = "SELECT l.id, l.name, l.date_start, IFNULL(MAX(b.price), l.price) AS price, l.image, l.date_end, c.name AS category, COUNT(b.price) AS count_bet"
         . " FROM lots l"
         . " JOIN categories c ON l.category_id = c.id"
         . " LEFT JOIN bets b ON b.lot_id = l.id"
-        . " WHERE c.id = $category_id && l.date_end >= NOW()"
+        . " WHERE c.id = $category_id"
         . " GROUP BY l.id"
         . " ORDER BY l.date_start DESC"
         . " LIMIT $page_items OFFSET $offset";
@@ -61,6 +60,7 @@ $page_content = include_template(
         "lots"     => $lots,
         "category" => $category,
         'pagination' => $pagination,
+        'time_to_close' => $time_to_close,
     ]
 );
 
