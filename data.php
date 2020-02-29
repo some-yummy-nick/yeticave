@@ -1,17 +1,20 @@
 <?php
 session_start();
+require_once 'vendor/autoload.php';
 require_once "functions.php";
+require_once "Database.php";
+
 $app_name   = "Yeticave";
 $categories = [];
 $lots       = [];
 $users      = [];
 $time_to_close = 28800;
-$page_items = 9;
-
+$page_items = 2;
 $host     = "localhost";
 $user     = "root";
 $password = "";
 $database = "yeticave";
+$dbHelper = new Database($host,$user,$password, $database);
 $connect  = mysqli_connect($host, $user, $password, $database);
 
 //$sql = "INSERT INTO users SET email = 'dev@gmail.com',password = 'secret'";
@@ -40,7 +43,12 @@ $connect  = mysqli_connect($host, $user, $password, $database);
 //    $records_count = mysqli_num_rows($result_number);
 //    print(" кол-во записей в таблице: " . $records_count . "</br>");
 //}
-if ($connect) {
+if ($dbHelper->getLastError()) {
+    $error = $dbHelper->getLastError();
+    $title = "Ошибка соединения с базой";
+    http_response_code(404);
+    $page_content = include_template("error.php", ["title" => $title, "error" => $error]);
+} else {
     mysqli_query($connect, "START TRANSACTION");
     $sql_select_categories    = "SELECT * FROM categories";
     $sql_select_lots          = "SELECT l.name, l.id, l.image, l.price, l.date_end, c.name 'category' FROM lots l JOIN categories c ON l.category_id = c.id ORDER BY l.date_start DESC";
@@ -66,8 +74,7 @@ if ($connect) {
         $lot = mysqli_fetch_all($result_get_winner, MYSQLI_ASSOC);
         if (!empty($lot)) {
             foreach ($lot as $key => $value) {
-                $sql  = "UPDATE lots SET winner_id = ?
-            WHERE id = ?";
+                $sql  = "UPDATE lots SET winner_id = ?  WHERE id = ?";
                 $stmt = db_get_prepare_stmt($connect, $sql, [$value['user_id'], $value['id']]);
                 mysqli_stmt_execute($stmt);
                 $result = mysqli_stmt_get_result($stmt);
@@ -75,21 +82,33 @@ if ($connect) {
                 if ($result) {
                     $res = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 }
+                $transport = new Swift_SmtpTransport("smtp.gmail.com", 587,'tls');
+                $transport->setUsername("glebovakristina841@gmail.com");
+                $transport->setPassword("aiwae4Ohhu");
+                $mailer = new Swift_Mailer($transport);
+                $logger = new Swift_Plugins_Loggers_ArrayLogger();
+                $mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));
+                $sql_user = "SELECT id, name, email FROM users WHERE id = {$value['user_id']}";
+                $result_select_users      = mysqli_query($connect, $sql_user);
+                $winner = mysqli_fetch_all($result_select_users, MYSQLI_ASSOC);
+                $message = new Swift_Message();
+                $message->setSubject('Ваша ставка победила!');
+                $message->setFrom(['glebovakristina841@gmail.com' => 'Yeticave']);
+                $message->setTo($winner[0]['email'], $winner[0]['name']);
+                $msg_content = include_template('email.php', [
+                    'winner' => $winner,
+                    'value' => $value,
+                ]);
+                $message->setBody($msg_content, 'text/html');
+                $mailer->send($message);
             }
         }
     }
 
-
-
-else {
+    else {
         mysqli_query($connect, "ROLLBACK");
     }
 
-} else {
-    $error = mysqli_connect_error();
-    $title = "Ошибка соединения с базой";
-    http_response_code(404);
-    $page_content = include_template("error.php", ["title" => $title, "error" => $error]);
 }
 
 // ставки пользователей, которыми надо заполнить таблицу

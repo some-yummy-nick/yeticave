@@ -1,0 +1,7 @@
+{
+    "name": "marat/yeticave",
+    "type": "project",
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
