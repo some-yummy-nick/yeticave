@@ -37,6 +37,9 @@ class Database {
     public function getResultAsArray() {
         return mysqli_fetch_all($this->last_result, MYSQLI_ASSOC);
     }
+    public function setTransaction($message) {
+        return mysqli_query($this->db_resource, $message);
+    }
 
     public function getLastId() {
         return mysqli_insert_id($this->db_resource);

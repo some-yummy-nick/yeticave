@@ -1,4 +1,4 @@
 <?php
- if($error) debug($error);
+if ($error) debug($error);
 ?>
-<h1><?=$title?></h1>
+<h1><?= $title ?></h1>

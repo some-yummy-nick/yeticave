@@ -1,6 +1,3 @@
-<?
-$eightHoursInSeconds = 28800;
-?>
 <section class="promo">
     <h2 class="promo__title">Нужен стафф для катки?</h2>
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное
@@ -9,7 +6,8 @@ $eightHoursInSeconds = 28800;
         <? if ($categories): ?>
             <?php foreach ($categories as $category): ?>
                 <li class="promo__item promo__item--<?= $category["english_name"] ?>">
-                    <a class="promo__link" href="/lots.php?category_id=<?= $category["id"] ?>"><?= $category["name"] ?></a>
+                    <a class="promo__link"
+                       href="/lots.php?category_id=<?= $category["id"] ?>"><?= $category["name"] ?></a>
                 </li>
             <?php endforeach; ?>
         <? endif; ?>
@@ -35,7 +33,8 @@ $eightHoursInSeconds = 28800;
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= get_formatted_amount($lot["price"]) ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?= get_formatted_amount($lot["price"]) ?><b
+                                    class="rub">р</b></span>
                         </div>
                         <?php if (strtotime($lot['date_end']) > time()) : ?>
                             <div

@@ -4,19 +4,18 @@ require_once "data.php";
 $success = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $required_fields = ["email", "password"];
-    $errors          = [];
-    $form            = $_POST;
-    foreach ($required_fields as $field) {
-        if (empty($form[$field])) {
-            $errors[$field] = "Это поле надо заполнить";
-        } else {
-            if ($field = "email") {
-                if (filter_var($form[$field], FILTER_VALIDATE_EMAIL) === false) {
-                    $errors[$field] = "Формат почтового ящика неправильный";
-                }
-            }
-        }
+    $errors = [];
+    $form = $_POST;
+    $rules = [
+        'email' => 'required|valid_email',
+        'password' => 'required|min_len,8',
+    ];
+    $gump = new GUMP('ru');
+    $gump->set_field_name("password", "Пароль");
+    $gump->validation_rules($rules);
+    $validated_data = $gump->run($_POST);
+    if (!$validated_data) {
+        $errors = $gump->get_errors_array();
     }
     if (!count($errors)) {
         $user = searchUserByEmail($form["email"], $users);
@@ -28,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $errors["password"] = "Неверный пароль";
             }
         } else {
-            $errors["email"]    = "Такой пользователь не найден";
+            $errors["email"] = "Такой пользователь не найден";
             $errors["password"] = "Неверный пароль";
 
         }
@@ -51,10 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $layout_content = include_template(
     "layout.php",
     [
-        "content"    => $page_content,
-        "title"      => $app_name . " | Войти",
+        "content" => $page_content,
+        "title" => $app_name . " | Войти",
         "categories" => $categories,
-        "is_auth"    => isset($_SESSION["user"]),
+        "is_auth" => isset($_SESSION["user"]),
     ]
 );
 print($layout_content);

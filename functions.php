@@ -1,5 +1,5 @@
 <?php
-define ('CACHE_DIR', "/Open/OSPanel/domains/yeticave/cash");
+define('CACHE_DIR', "/Open/OSPanel/domains/yeticave/cash");
 
 function debug($arr)
 {
@@ -68,7 +68,7 @@ function db_get_prepare_stmt($link, $sql, $data = [])
     $stmt = mysqli_prepare($link, $sql);
 
     if ($data) {
-        $types     = "";
+        $types = "";
         $stmt_data = [];
 
         foreach ($data as $value) {
@@ -83,7 +83,7 @@ function db_get_prepare_stmt($link, $sql, $data = [])
             }
 
             if ($type) {
-                $types       .= $type;
+                $types .= $type;
                 $stmt_data[] = $value;
             }
         }
@@ -97,14 +97,16 @@ function db_get_prepare_stmt($link, $sql, $data = [])
     return $stmt;
 }
 
-function cache_get_key($sql, $params, $tag) {
+function cache_get_key($sql, $params, $tag)
+{
     $str = md5(implode($params) . $tag);
     $key = $str . md5($sql);
 
     return $key;
 }
 
-function cache_save_data($filepath, $data) {
+function cache_save_data($filepath, $data)
+{
     $res = false;
 
     if (!file_exists($filepath)) {
@@ -114,7 +116,8 @@ function cache_save_data($filepath, $data) {
     return $res;
 }
 
-function cache_del_data($data, $tag) {
+function cache_del_data($data, $tag)
+{
     $cache_part = md5(implode($data) . $tag);
     $files = scandir(CACHE_DIR);
 
@@ -125,7 +128,8 @@ function cache_del_data($data, $tag) {
     }
 }
 
-function is_cache_expired($filename, $ttl) {
+function is_cache_expired($filename, $ttl)
+{
     $res = false;
 
     $mod_time = filemtime($filename);
@@ -138,19 +142,19 @@ function is_cache_expired($filename, $ttl) {
     return $res;
 }
 
-function cache_get_data($link, $sql, $params, $tag, $ttl = 1) {
+function cache_get_data($link, $sql, $params, $tag, $ttl = 1)
+{
     $filename = cache_get_key($sql, $params, $tag) . '.json';
     $filepath = CACHE_DIR . DIRECTORY_SEPARATOR . $filename;
 
     if (file_exists($filepath) && !is_cache_expired($filepath, $ttl)) {
         $content = file_get_contents($filepath);
         $res_data = json_decode($content, true);
-    }
-    else {
+    } else {
         $stmt = db_get_prepare_stmt($link, $sql, $params);
         mysqli_stmt_execute($stmt);
 
-        $res  = mysqli_stmt_get_result($stmt);
+        $res = mysqli_stmt_get_result($stmt);
 
         $res_data = mysqli_fetch_all($res, MYSQLI_ASSOC);
         cache_save_data($filepath, $res_data);
@@ -167,9 +171,9 @@ function showDate($date)
     if ($time < 60) {
         return "меньше минуты назад";
     } elseif ($time < 3600) {
-        return dimension((int) ($time / 60), "i");
+        return dimension((int)($time / 60), "i");
     } elseif ($time < 86400) {
-        return dimension((int) ($time / 3600), "G");
+        return dimension((int)($time / 3600), "G");
     } else if ($time < 172800) {
         return "Вчера в " . date("H:i", $date);
     } elseif ($time < 2592000) {
@@ -178,6 +182,7 @@ function showDate($date)
 
     return false;
 }
+
 /**
  * Форматирует число в соответствии с заданием
  *
@@ -194,6 +199,7 @@ function get_formatted_amount($price): string
 
     return $price;
 }
+
 function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
     $number = (int)$number;
@@ -217,6 +223,7 @@ function get_noun_plural_form(int $number, string $one, string $two, string $man
             return $many;
     }
 }
+
 /**
  * Показывает сколько времени назад была сделана ставка
  * @param $time время в формате unix
@@ -226,13 +233,13 @@ function show_time($time)
 {
     $time_ago = time() - $time;
     if ($time_ago < 3600) {
-        return intval($time_ago / 60).' '.get_noun_plural_form($time_ago / 60, 'минута', 'минуты',
-                                                               'минут').' назад';
+        return intval($time_ago / 60) . ' ' . get_noun_plural_form($time_ago / 60, 'минута', 'минуты',
+                'минут') . ' назад';
     } elseif ($time_ago < 86400) {
-        return intval($time_ago / 3600).' '.get_noun_plural_form($time_ago / 3600, 'час', 'часа',
-                                                                 'часов').' назад';
+        return intval($time_ago / 3600) . ' ' . get_noun_plural_form($time_ago / 3600, 'час', 'часа',
+                'часов') . ' назад';
     }
-    return date('d.m.y', $time).' в '.date('H:i', $time);
+    return date('d.m.y', $time) . ' в ' . date('H:i', $time);
 }
 
 /**
@@ -244,7 +251,7 @@ function showTimeEnd($date)
 {
     $seconds = strtotime($date) - time();
 
-    $times        = seconds2times($seconds);
+    $times = seconds2times($seconds);
     $times_values = ['', ':', ':', 'д.', 'лет'];
 
     for ($i = count($times) - 1; $i >= 0; $i--) {
@@ -282,7 +289,7 @@ function seconds2times($seconds)
         $period = floor($seconds / $periods[$i]);
         if (($period > 0) || ($period == 0 && $count_zero)) {
             $times[$i + 1] = $period;
-            $seconds       -= $period * $periods[$i];
+            $seconds -= $period * $periods[$i];
 
             $count_zero = true;
         }
@@ -314,10 +321,11 @@ function dimension($time, $type)
     return $time . " " . $dimension[$type][$n] . " назад";
 }
 
-function getWord($number, $suffix) {
+function getWord($number, $suffix)
+{
     $keys = array(2, 0, 1, 1, 1, 2);
     $mod = $number % 100;
-    $suffix_key = ($mod > 7 && $mod < 20) ? 2: $keys[min($mod % 10, 5)];
+    $suffix_key = ($mod > 7 && $mod < 20) ? 2 : $keys[min($mod % 10, 5)];
     return $suffix[$suffix_key];
 }
 

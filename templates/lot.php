@@ -1,7 +1,3 @@
-<?
-$eightHoursInSeconds = 28800;
-?>
-
 <? if (isset($lot)): ?>
     <section class="lot-item container">
         <h2><?= $lot["name"] ?></h2>

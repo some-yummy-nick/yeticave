@@ -2,7 +2,7 @@
 require_once "functions.php";
 
 $browser = get_browser(null, true);
-$number  = 13;
+$number = 13;
 echo "number = " . $number;
 //удаление переменной
 unset($number);
@@ -20,8 +20,8 @@ $myFriendsToString = implode(",", $myFriends);
 debug($myFriendsToString);
 
 $gif = [
-    "gif"         => "/uploads/preview_gif58d28ce80e3a9.gif",
-    "title"       => "Енотик",
+    "gif" => "/uploads/preview_gif58d28ce80e3a9.gif",
+    "title" => "Енотик",
     "likes_count" => 0,
 ];
 // получить все ключи в ассоциативном массиве
@@ -55,24 +55,24 @@ debug($someDateToTimestamp);
 //Сколько осталось дней до нового года
 $curday = date("z");
 // Год високосный или нет
-$yds           = date("L") ? 366 : 365;
+$yds = date("L") ? 366 : 365;
 $days_remining = $yds - $curday;
 echo "До Нового года осталось <strong>" . $days_remining . "</strong> дней" . "<br><br>";
 
 //Время до полуночи
-$ts              = time();
-$tsMidnight      = strtotime("tomorrow");
-$secToMidnight   = $tsMidnight - $ts;
+$ts = time();
+$tsMidnight = strtotime("tomorrow");
+$secToMidnight = $tsMidnight - $ts;
 $hoursToMidnight = floor($secToMidnight / 3600);
-$minToMidnight   = floor(($secToMidnight % 3600) / 60);
+$minToMidnight = floor(($secToMidnight % 3600) / 60);
 echo "До полуночи осталось: " . $hoursToMidnight . " часов и " . $minToMidnight . " минут" . "<br><br>";
 
 $headers_keys = [
-    "Язык браузера"             => "ACCEPT_LANGUAGE",
-    "Страница перехода"         => "REFERER",
-    "Поддерживаемый контент"    => "ACCEPT",
+    "Язык браузера" => "ACCEPT_LANGUAGE",
+    "Страница перехода" => "REFERER",
+    "Поддерживаемый контент" => "ACCEPT",
     "Браузер и ОС пользователя" => "USER_AGENT",
-    "Домен сайта"               => "HOST",
+    "Домен сайта" => "HOST",
 ];
 
 foreach ($headers_keys as $name => $key) {

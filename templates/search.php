@@ -1,6 +1,3 @@
-<?
-$eightHoursInSeconds = 28800;
-?>
 <section class="lots">
     <h2>Результаты поиска по запросу «<span><?= $search ?></span>»</h2>
     <? if ($lots) : ?>

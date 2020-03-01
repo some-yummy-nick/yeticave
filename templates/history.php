@@ -1,6 +1,3 @@
-<?
-$eightHoursInSeconds = 28800;
-?>
 <section class="lots">
     <div class="lots__header">
         <h2>История просмотров</h2>
@@ -31,7 +28,7 @@ $eightHoursInSeconds = 28800;
                                     ) <= $time_to_close && strtotime($lot['date_end']) - strtotime(
                                         'now'
                                     ) > 0) ? 'timer--finishing' : '' ?>">
-                               <span><? showTimeEnd($lot['date_end']); ?></span>
+                                <span><? showTimeEnd($lot['date_end']); ?></span>
                             </div>
                         <?php else : ?>
                             <div class="lot-item__timer timer timer--end">Торги окончены</div>

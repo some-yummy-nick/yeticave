@@ -1,7 +1,9 @@
 {
-    "name": "marat/yeticave",
-    "type": "project",
-    "require": {
-        "swiftmailer/swiftmailer": "^6.2"
-    }
+  "name": "marat/yeticave",
+  "type": "project",
+  "minimum-stability": "dev",
+  "require": {
+    "swiftmailer/swiftmailer": "^6.2",
+    "wixel/gump": "^1.6"
+  }
 }

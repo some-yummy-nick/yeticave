@@ -13,14 +13,14 @@ if (isset($_COOKIE["history"])) {
     }
 }
 
-$page_content   = include_template("history.php", ["lots" => $historyLots]);
+$page_content = include_template("history.php", ["lots" => $historyLots]);
 $layout_content = include_template(
     "layout.php",
     [
-        "content"    => $page_content,
-        "title"      => $app_name . " | История",
+        "content" => $page_content,
+        "title" => $app_name . " | История",
         "categories" => $categories,
-        "is_auth"    => isset($_SESSION["user"]),
+        "is_auth" => isset($_SESSION["user"]),
     ]
 );
 print($layout_content);

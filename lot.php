@@ -55,24 +55,15 @@ if (!$connect) {
             );
         } else {
             $sql_bet = "INSERT INTO bets (`date`, `price`, `lot_id`, `user_id`) VALUES (NOW(),?, ?, ?)";
-
-            $stmt_bet = db_get_prepare_stmt(
-                $connect,
-                $sql_bet,
-                [$form["cost"], $lot["id"], $_SESSION["user"]["id"]]
-            );
-            $res_bet  = mysqli_stmt_execute($stmt_bet);
-
-            if ($res_bet) {
-                $bet_id = mysqli_insert_id($connect);
+            $dbHelper->executeQuery($sql_bet, [$form["cost"], $lot["id"], $_SESSION["user"]["id"]]);
+            if (!$dbHelper->getLastError()) {
+                $bet_id = $dbHelper->getLastId();
             }
-
             $user_id         = intvaL($_SESSION["user"]["id"]);
             $lots_id         = intval($lot["id"]);
             $bets_id         = intval($bet_id);
             $sql_user_update = "UPDATE users SET `lots_id`= $lots_id, `bets_id`= $bets_id WHERE users.id=" . $_SESSION["user"]["id"];
-            $result          = mysqli_query($connect, $sql_user_update);
-
+            $dbHelper->executeQuery($sql_user_update);
             header("Location: lot.php?lot_id=" . $lot["id"]);
         }
     }
